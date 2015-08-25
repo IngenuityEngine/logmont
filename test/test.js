@@ -6,8 +6,7 @@ var expect = require('expect.js')
 // Our Modules
 /////////////////////////
 var arkUtil = require('arkutil')
-var baseLogger = require('../logmont/baseLogger')
-var dbLogger = require('../logmont/dbLogger')
+var logFactory = require('../logmont/factory')
 
 // Passed globals
 /////////////////////////
@@ -15,6 +14,7 @@ var dbLogger = require('../logmont/dbLogger')
 // Mocha globals
 /////////////////////////
 var describe = arkUtil.getGlobal('describe')
+var request = require('superagent')
 // var beforeEach = arkUtil.getGlobal('beforeEach')
 // var afterEach = arkUtil.getGlobal('afterEach')
 
@@ -36,22 +36,45 @@ this.timeout(10000)
 // Test Variables
 /////////////////////////
 var dbOptions = {
-	logApiRoot: 'http://127.0.0.1/api/log/'
+	apiRoot: 'http://127.0.0.1:/api/log/',
 }
 
-both('should init for simple logging', function(done) {
-	var log = baseLogger('test')
-	log('sup')
-	log('warning', {info: ['not','cool'], finished: false})
-	log('error', 'zomg!')
+both('should do simple logging', function(done) {
+	var lm = logFactory('test')
+
+	lm('sup')
+	lm('warning', {info: ['not','cool'], finished: false})
+	lm('error', 'zomg!')
+	lm.heading('About to go down')
+	lm('stuff')
+	lm('moreStuff')
+	lm.line()
 	done()
 })
 
-both('should init for persitent logging', function(done) {
-	var log = dbLogger('db', dbOptions)
-	log('sup')
-	log('warning', {info: ['not','cool'], finished: false})
-	log('error', 'zomg!')
+both('should do database logging', function(done) {
+	var lm = logFactory('database', 'dbTest', dbOptions)
+
+	lm('sup')
+	lm('warning', {info: ['not','cool'], finished: false})
+	lm('error', 'zomg!')
+
+	request
+		.get(dbOptions.apiRoot)
+		.end(function(err, resp)
+		{
+			// console.log('err:', err)
+			// console.log('resp:', resp)
+			// expect()
+			done()
+		})
+})
+
+both('should log events', function(done) {
+	var lm = logFactory('database', 'eventTest', dbOptions)
+
+	lm('event', {info: ['not','cool'], finished: false})
+	lm('error', 'zomg!')
 	done()
 })
 
