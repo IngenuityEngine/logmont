@@ -1,0 +1,34 @@
+{
+  "name": "caretaker",
+  "description": "Caretaker 3.0",
+  "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "Grant Miller",
+    "email": "blented@gmail.com"
+  },
+  "main": "./server/coren",
+  "scripts": {
+    "prepublish": "npm prune",
+    "start": "coren -s",
+    "test": "mocha test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "keywords": [
+    "coren"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "email": "blented@gmail.com"
+  },
+  "engines": {
+    "node": ">=0.10.x",
+    "npm": ">=1.1.x"
+  },
+  "readmeFilename": "readme.md"
+}
