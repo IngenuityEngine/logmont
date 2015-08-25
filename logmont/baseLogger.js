@@ -4,9 +4,6 @@
 var _ = require('lodash')
 var Class = require('uberclass')
 
-// Our Modules
-/////////////////////////
-
 // Main
 /////////////////////////
 module.exports = Class.extend(
@@ -99,17 +96,14 @@ log: function(level, data)
 				args.push(val)
 		})
 
-	// no clue, pulled from debug
+	// pulled from debug
 	if (console && console.log)
 		Function.prototype.apply.call(console.log, console, args)
 
-	return data
+	this.save(data)
 },
 
-save: function(cb)
-{
-	cb()
-},
+save: _.noop,
 
 heading: function(heading)
 {
@@ -136,13 +130,3 @@ colorize: function(str, c)
 
 // end of module
 })
-
-
-if (!module.parent)
-{
-	console.log('wtf')
-	console.log('\u001b[9' + 6 + 'm' + 'wtf' +
-		'\u001b[3' + 6 + 'm\u001b[90m' + 'tits')
-	// var sigh = module.exports('wtf')
-	// sigh.log('grr')
-}

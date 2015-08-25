@@ -14,7 +14,6 @@ var logFactory = require('../logmont/factory')
 // Mocha globals
 /////////////////////////
 var describe = arkUtil.getGlobal('describe')
-var request = require('superagent')
 // var beforeEach = arkUtil.getGlobal('beforeEach')
 // var afterEach = arkUtil.getGlobal('afterEach')
 
@@ -35,8 +34,8 @@ this.timeout(10000)
 
 // Test Variables
 /////////////////////////
-var dbOptions = {
-	apiRoot: 'http://127.0.0.1:/api/log/',
+var logOptions = {
+	apiRoot: 'http://127.0.0.1:2020/api/log/',
 }
 
 both('should do simple logging', function(done) {
@@ -53,25 +52,34 @@ both('should do simple logging', function(done) {
 })
 
 both('should do database logging', function(done) {
-	var lm = logFactory('database', 'dbTest', dbOptions)
+	var lm = logFactory('database', 'dbTest', logOptions)
 
 	lm('sup')
 	lm('warning', {info: ['not','cool'], finished: false})
 	lm('error', 'zomg!')
+	var data = {
+		type: 'error',
+		data: {
+			zomg: ['world','is','ending'],
+		},
+		source: 'somewhere',
+	}
 
-	request
-		.get(dbOptions.apiRoot)
-		.end(function(err, resp)
-		{
-			// console.log('err:', err)
-			// console.log('resp:', resp)
-			// expect()
-			done()
-		})
+	lm.save(data, function(err, resp)
+	{
+		resp = resp[0]
+		console.log('resp:', resp)
+		expect(resp._id).to.be.ok()
+		expect(resp.type).to.be('error')
+		expect(resp.data).to.be.an('object')
+		expect(resp.data.zomg).to.be.an('array')
+		expect(resp.source).to.be('somewhere')
+		done()
+	})
 })
 
 both('should log events', function(done) {
-	var lm = logFactory('database', 'eventTest', dbOptions)
+	var lm = logFactory('database', 'eventTest', logOptions)
 
 	lm('event', {info: ['not','cool'], finished: false})
 	lm('error', 'zomg!')
