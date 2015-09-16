@@ -26,7 +26,7 @@ defaultOptions: {
 		'critical',
 	],
 	saveTimeout: 10000,
-	apiRoot: 'http://127.0.0.1/log/',
+	apiRoot: 'http://127.0.0.1/api/log/',
 	colors: {
 		info: 6,
 		error: 2,
