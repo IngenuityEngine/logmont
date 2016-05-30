@@ -24,8 +24,8 @@ describe('test/test.js', function()
 
 // test functions for client/server
 var both = arkUtil.getGlobal('it')
-// var client = arkUtil.clientTest(both)
-// var server = arkUtil.serverTest(both)
+// var client = arkUtil.clientOnly(both)
+// var server = arkUtil.serverOnly(both)
 
 // bail after the first error
 this.bail(true)
