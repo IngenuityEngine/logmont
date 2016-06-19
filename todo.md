@@ -28,7 +28,7 @@ High Level
 		{
 			pluginFuncs = pluginManager.getPlugins('update')
 
-			actualFuncs = _.collect(pluginFuncs, function(func)
+			actualFuncs = _.map(pluginFuncs, function(func)
 			{
 				return function(cb)
 				{
@@ -424,7 +424,7 @@ about to add child view of calendar, need to have a slot for it to go in the cal
 				if (!linkModels[linkEntityType])
 					linkModels[linkEntityType] = factory
 						.getEntityModel(linkEntityType)
-				taskLinkInfo = _.where(linkInfo[linkEntityType], {id: task.link.id})
+				taskLinkInfo = _.filter(linkInfo[linkEntityType], {id: task.link.id})
 				if (taskLinkInfo)
 					taskLinkInfo = taskLinkInfo[0]
 				else
