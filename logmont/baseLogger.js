@@ -50,13 +50,14 @@ init: function(name, options)
 	this.options = _.extend(
 		_.clone(this.defaultOptions),
 		options)
+	var self = this
 	_.each(this.levels, function(level)
 	{
-		this.prototype[level] = function()
+		self.prototype[level] = function()
 		{
-			this.log(level, arguments)
-		}.bind(this)
-	}, this)
+			self.log(level, arguments)
+		}
+	})
 },
 
 getLogger: function()
